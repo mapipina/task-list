@@ -76,6 +76,10 @@ To submit your coding challenge, commit all your changes to the `master` branch 
 following command:
 
 ```
+# Make sure all changes were committed
+git diff-index --quiet HEAD -- || echo 'You have uncommitted changes!'
+
+# Create bundle to submit
 git bundle create coding-challenge.bundle HEAD master
 ```
 
