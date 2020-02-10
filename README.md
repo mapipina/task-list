@@ -73,7 +73,7 @@ You should only need to add/modify code in the _src/_ directory.
 ## Submission
 
 To submit your coding challenge, commit all your changes to the `master` branch and run the 
-following command:
+following commands:
 
 ```
 # Make sure all changes were committed
@@ -83,7 +83,7 @@ git diff-index --quiet HEAD -- || echo 'You have uncommitted changes!'
 git bundle create coding-challenge.bundle HEAD master
 ```
 
-Email the the generated _coding-challenge.bundle_ file to engineering@wonderschool.com. We do our 
+Email the generated _coding-challenge.bundle_ file to engineering@wonderschool.com. We do our 
 best to review and respond to submissions within 1-2 business days.
 
 Thanks for taking the time to do this coding challenge and here's hoping we talk soon!
