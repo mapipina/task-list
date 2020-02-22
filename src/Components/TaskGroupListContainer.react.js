@@ -3,6 +3,13 @@ import React from "react";
 class TaskGroupListContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selectedTaskList: []
+    };
+  }
+
+  componentDidMount() {
+    this.filterData();
   }
 
   // need to render each task
@@ -14,22 +21,35 @@ Your implementation should resemble the above design
 Please don't introduce any new dependencies, you should have everything you need to complete the challenge
 We value well structured code that follows best practices
    */
-  checkLockStatus() {
+  checkLockStatus() {}
 
-  }
+  checkCompletionStatus() {}
 
-  checkCompletionStatus() {
-
+  filterData() {
+    const { selectedTaskGroup, taskGroupList } = this.props;
+    const selectedTaskList = taskGroupList.filter(
+      group => group.group === selectedTaskGroup
+    );
+    this.setState({ selectedTaskList });
   }
 
   render() {
+    const { onBackBtnClick, selectedTaskGroup } = this.props;
     return (
       <div>
-        <button onClick={this.props.onBackBtnClick}>Back</button>
-        <h1>
-          hello from task group list container. You have selected
-          {this.props.selectedTaskGroup}
-        </h1>
+        <button onClick={onBackBtnClick}>Back</button>
+        <div>
+          {this.state.selectedTaskList.map(task => (
+            <div>
+              <input
+                type="checkbox"
+                key={`${selectedTaskGroup}-${task.id}`}
+                name={task.task}
+              ></input>
+              <label key={`Label-${task.id}`}>{task.task}</label>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
