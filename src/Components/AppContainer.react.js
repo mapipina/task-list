@@ -9,15 +9,21 @@ const LIST_VIEW = "taskGroupListContainer";
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
-      this.state = {
-        title: DEFAULT_TITLE,
-        view: DEFAULT_VIEW,
-        selectedTaskGroup: '',
-      };
-      this.initialState = this.state;
-      this.onTaskGroupClick = this.onTaskGroupClick.bind(this)
-      this.onBackBtnClick = this.onBackBtnClick.bind(this)
-      // this.renderView = this.renderView.bind(this);
+    this.state = {
+      title: DEFAULT_TITLE,
+      view: DEFAULT_VIEW,
+      selectedTaskGroup: "",
+      taskGroupList: []
+    };
+    this.initialState = this.state;
+    this.onTaskGroupClick = this.onTaskGroupClick.bind(this);
+    this.onBackBtnClick = this.onBackBtnClick.bind(this);
+    this.onTaskCompletion = this.onTaskCompletion.bind(this);
+  }
+
+  componentDidMount() {
+    const { taskGroupList } = this.props;
+    this.setState({ taskGroupList });
   }
 
   renderView = taskGroupList => {
@@ -27,6 +33,7 @@ class AppContainer extends React.Component {
     view === LIST_VIEW
       ? (selectedView = (
           <TaskGroupListContainer
+            onTaskCompletion={this.onTaskCompletion}
             onBackBtnClick={this.onBackBtnClick}
             selectedTaskGroup={selectedTaskGroup}
             taskGroupList={taskGroupList}
@@ -43,19 +50,37 @@ class AppContainer extends React.Component {
   };
 
   onTaskGroupClick = selectedTaskGroup => {
-    this.setState({ view: LIST_VIEW, title: selectedTaskGroup, selectedTaskGroup});
-  }
+    this.setState({
+      view: LIST_VIEW,
+      title: selectedTaskGroup,
+      selectedTaskGroup
+    });
+  };
+
+  onTaskCompletion = taskID => {
+    const taskGroupList = [...this.state.taskGroupList];
+    taskGroupList.forEach(task => {
+      if (task.id === taskID) {
+        task.completedAt = new Date();
+      }
+    });
+    this.setState({ taskGroupList });
+  };
 
   onBackBtnClick() {
-    this.setState(this.initialState);
+    this.setState({
+      title: DEFAULT_TITLE,
+      view: DEFAULT_VIEW,
+      selectedTaskGroup: ""
+    });
   }
 
   render() {
-    const { taskGroupList } = this.props;
+    const { taskGroupList, title } = this.state;
 
     return (
       <div>
-        <h1> {this.state.title}</h1>
+        <h1> {title}</h1>
         {this.renderView(taskGroupList)}
       </div>
     );

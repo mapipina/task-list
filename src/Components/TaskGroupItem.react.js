@@ -1,10 +1,6 @@
 import React from "react";
 
 class TaskGroupItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     completedTasks: 0,
     totalTasks: 0

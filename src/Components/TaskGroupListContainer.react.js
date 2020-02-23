@@ -1,4 +1,5 @@
 import React from "react";
+import TaskGroupListItem from "./TaskGroupListItem.react";
 
 class TaskGroupListContainer extends React.Component {
   constructor(props) {
@@ -6,24 +7,13 @@ class TaskGroupListContainer extends React.Component {
     this.state = {
       selectedTaskList: []
     };
+    this.isTaskDependent = this.isTaskDependent.bind(this);
+    this.isTaskLocked = this.isTaskLocked.bind(this);
   }
 
   componentDidMount() {
     this.filterData();
   }
-
-  // need to render each task
-  // each task has it's own propert
-  /**
-   * Locked tasks cannot have their completion status toggled
-Tasks remain locked until all of their dependencies have been completed
-Your implementation should resemble the above design
-Please don't introduce any new dependencies, you should have everything you need to complete the challenge
-We value well structured code that follows best practices
-   */
-  checkLockStatus() {}
-
-  checkCompletionStatus() {}
 
   filterData() {
     const { selectedTaskGroup, taskGroupList } = this.props;
@@ -33,23 +23,65 @@ We value well structured code that follows best practices
     this.setState({ selectedTaskList });
   }
 
+  isTaskDependent = taskID => {
+    const tasks = [...this.props.taskGroupList];
+    const task = tasks.filter(task => task.id === taskID);
+    const isDependent = task[0].dependencyIds.length > 0 ? true : false;
+
+    return { isDependent, task };
+  };
+
+  isTaskLocked = taskID => {
+    let isLocked = false;
+    const tasks = [...this.props.taskGroupList];
+    const { isDependent, task } = this.isTaskDependent(taskID);
+
+    if (isDependent) {
+      const dependencies = task[0].dependencyIds;
+      let incompleteDependencies = 0;
+
+      dependencies.forEach(dependency => {
+        const dependencyObj = tasks.filter(task => task.id === dependency);
+        if (dependencyObj[0].completedAt === null) {
+          incompleteDependencies++;
+        }
+      });
+
+      isLocked = incompleteDependencies > 0 ? true : false;
+    } else {
+      isLocked = false;
+    }
+
+    return isLocked;
+  };
+
+  isTaskComplete = taskID => {
+    const { taskGroupList } = this.props;
+    const taskObjArr = taskGroupList.filter(task => task.id === taskID)
+    const isComplete = taskObjArr[0].completedAt !== null ? true : false;
+
+    return isComplete;
+  }
+
   render() {
-    const { onBackBtnClick, selectedTaskGroup } = this.props;
+    const { onBackBtnClick, selectedTaskGroup, onTaskCompletion } = this.props;
+    const { selectedTaskList } = this.state;
     return (
       <div>
         <button onClick={onBackBtnClick}>Back</button>
-        <div>
-          {this.state.selectedTaskList.map(task => (
-            <div>
-              <input
-                type="checkbox"
+        <ul>
+          {selectedTaskList.map(task => {
+            return (
+              <TaskGroupListItem
+                onTaskCompletion={onTaskCompletion}
                 key={`${selectedTaskGroup}-${task.id}`}
-                name={task.task}
-              ></input>
-              <label key={`Label-${task.id}`}>{task.task}</label>
-            </div>
-          ))}
-        </div>
+                task={task}
+                lockedStatus={this.isTaskLocked(task.id)}
+                completionStatus={this.isTaskComplete(task.id)}
+              />
+            );
+          })}
+        </ul>
       </div>
     );
   }
