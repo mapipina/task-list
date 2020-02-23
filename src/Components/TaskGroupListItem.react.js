@@ -4,14 +4,21 @@ class TaskGroupListItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      disabled: false, 
-      checked: false,
+      disabled: false,
+      checked: false
     };
   }
 
   componentDidMount() {
-    const { completionStatus } = this.props;
-    this.setState({ disabled: completionStatus, checked: completionStatus });
+    const { completionStatus, lockedStatus } = this.props;
+    if (lockedStatus) {
+      this.setState({
+        disabled: true,
+        checked: false
+      });
+    } else {
+      this.setState({ disabled: completionStatus, checked: completionStatus });
+    }
   }
 
   onTaskCheck = taskID => {
@@ -21,22 +28,34 @@ class TaskGroupListItem extends React.Component {
   };
 
   renderTask = (task, lockedStatus) => {
-    const taskDiv = lockedStatus ? (
-      <li>{task.task} is locked</li>
-    ) : (
-      <li>
-        <input
-          type='checkbox'
-          id={task.id}
-          name={task.task}
-          onClick={() => this.onTaskCheck(task.id)}
-          disabled={this.state.disabled}
-          checked={this.state.checked}
-        ></input>
-        <label>{task.task}</label>
-      </li>
+    const customCheckmark = lockedStatus && this.state.disabled
+      ? "task__custom-checkbox--locked"
+      : this.state.checked
+      ? "task__custom-checkbox--complete"
+      : "task__custom-checkbox--incomplete";
+
+    const taskText = this.state.checked
+      ? "task__label--complete"
+      : lockedStatus
+      ? "task__label--locked"
+      : "";
+
+    return (
+      <div className='task'>
+        <label>
+          <input
+            type='checkbox'
+            id={task.id}
+            name={task.task}
+            onChange={() => this.onTaskCheck(task.id)}
+            disabled={this.state.disabled}
+            checked={this.state.checked}
+          />
+          <span className={`task__custom-checkbox ${customCheckmark}`}></span>
+          <span className={taskText}>{task.task}</span>
+        </label>
+      </div>
     );
-    return taskDiv;
   };
 
   render() {

@@ -79,8 +79,8 @@ class AppContainer extends React.Component {
     const { taskGroupList, title } = this.state;
 
     return (
-      <div>
-        <h1> {title}</h1>
+      <div className='app-container'>
+        <h1 className='app-container__title'>{title}</h1>
         {this.renderView(taskGroupList)}
       </div>
     );

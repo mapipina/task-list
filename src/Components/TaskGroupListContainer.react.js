@@ -57,19 +57,21 @@ class TaskGroupListContainer extends React.Component {
 
   isTaskComplete = taskID => {
     const { taskGroupList } = this.props;
-    const taskObjArr = taskGroupList.filter(task => task.id === taskID)
+    const taskObjArr = taskGroupList.filter(task => task.id === taskID);
     const isComplete = taskObjArr[0].completedAt !== null ? true : false;
 
     return isComplete;
-  }
+  };
 
   render() {
     const { onBackBtnClick, selectedTaskGroup, onTaskCompletion } = this.props;
     const { selectedTaskList } = this.state;
     return (
       <div>
-        <button onClick={onBackBtnClick}>Back</button>
-        <ul>
+        <span style={{ color: "#9DE1B6", cursor: 'pointer'}} onClick={onBackBtnClick}>
+          All Groups
+        </span>
+        <div>
           {selectedTaskList.map(task => {
             return (
               <TaskGroupListItem
@@ -81,7 +83,7 @@ class TaskGroupListContainer extends React.Component {
               />
             );
           })}
-        </ul>
+        </div>
       </div>
     );
   }

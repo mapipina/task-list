@@ -29,7 +29,9 @@ class TaskGroupItem extends React.Component {
   calculateTotalTasks() {
     let taskTotal = 0;
     const { taskGroup, taskGroupList } = this.props;
-    const newList = taskGroupList.filter(taskGroupObj => taskGroupObj.group === taskGroup);
+    const newList = taskGroupList.filter(
+      taskGroupObj => taskGroupObj.group === taskGroup
+    );
 
     taskTotal = newList.length;
     this.setState({ totalTasks: taskTotal });
@@ -37,11 +39,18 @@ class TaskGroupItem extends React.Component {
 
   render() {
     const { taskGroup } = this.props;
-    const { completedTasks, totalTasks} = this.state;
+    const { completedTasks, totalTasks } = this.state;
 
-    return <li onClick={this.props.onClick}>{taskGroup}
-        <section>{`${completedTasks} of ${totalTasks} completed`}</section>
-    </li>;
+    return (
+      <div onClick={this.props.onClick} className='task-group'>
+        <svg className='task-group__icon'>
+        </svg>
+        <span>
+          <p className='task-group__title'>{taskGroup}</p>
+          <p className='task-group__content'>{`${completedTasks} of ${totalTasks} completed`}</p>
+        </span>
+      </div>
+    );
   }
 }
 

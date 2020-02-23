@@ -1,0 +1,101 @@
+.app-container {
+  left: 5%;
+  top: 5%;
+  position: fixed;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app-container__title {
+  font-weight: 200;
+}
+
+.task-group,
+.task {
+  padding: 5% 0;
+}
+
+.task-group {
+  display: flex;
+  flex-direction: row;
+}
+
+.task-group__icon {
+  background: url(/group.svg) no-repeat center;
+  height: 25px;
+  margin: 5%;
+  margin-left: 0;
+  width: 25px;
+}
+
+.task-group__title,
+.task-group__content {
+  margin: 0;
+}
+
+.task-group__title {
+  font-weight: bold;
+  font-size: large;
+}
+
+.task-group__content {
+  color: darkgray;
+  font-size: smaller;
+  font-weight: lighter;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.task {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.task input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.task__custom-checkbox {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  height: 25px;
+  width: 25px;
+}
+
+.task__custom-checkbox--incomplete {
+  background: url(/incomplete.svg) no-repeat center;
+}
+
+.task__custom-checkbox--locked {
+  background: url(/locked.svg) no-repeat center;
+}
+
+.task__custom-checkbox--complete {
+  background: url(/completed.svg) no-repeat center;
+}
+
+.task__label {
+  font-weight: bold;
+}
+
+.task__label--locked {
+  text-decoration: none;
+  color: darkgray;
+}
+
+.task__label--complete {
+  text-decoration: line-through;
+  color: black;
+}
